@@ -1,6 +1,6 @@
 window.onload = function () {
 
-    sessionStorage.clear();
+    sessionStorage.clear(); // clears sessionStorage, to offer new chat to user
 
     let input = document.getElementById("input");
     let btn = document.getElementById("btn"); 
@@ -8,9 +8,8 @@ window.onload = function () {
     function inputQuestion() {
 
         let inputReturn = document.getElementById("input").value;
-
         return inputReturn;
-    }
+    } //Function to get input value
      
 
     input.addEventListener("keyup", function() {
@@ -19,70 +18,65 @@ window.onload = function () {
             btn.style.visibility = "visible";
 
             let remove = document.getElementById("questionBtns");
-            remove.innerHTML = "";
+            remove.innerHTML = ""; //removes suggested question buttons defined below
 
         } else {
-
             btn.style.visibility = "hidden";
         }
-    })
+    }) //when user enters something in the inpt field, the button shows up
 
     function questionAnswer() {
-        let questionsArray = [
-            ["question 1", "question 2", "question 3"],
-            ["1question 1", "1question 2", "1question 3"]
+        const questionsArray = [
+            ["1","2","3"],
+            ["11", "22", "33"]
         ];
     
-        let answersArray = [
-            ["answer 1", "answer 2", "answer 3"],
-            ["1answer 1", "1answer 2", "1answer 3"]
+        const answersArray = [
+            ["1a", "2a", "3a"],
+            ["11a", "22a", "33a"]
         ]; 
         
         let answer;
-
         let proposedQuestion;
-
         let questions;
         let btns;
-
-        let answerFound = false;
+        let answerFound = false; //same as questionFound, in the if else statements, if conditions are true these variables are true, then the if (answerFound || questionFound) stops the for loop
         let questionFound = false;
+        
 
-        for (let i = 0; i < questionsArray.length; i++) {
-            for (let j = 0; j < questionsArray[i].length; j++) {
-                if (questionsArray[i][j] == inputQuestion()) {
+        for (let i = 0; i < questionsArray.length; i++) { //get inside nested array
+            for (let j = 0; j < questionsArray[i].length; j++) { //choose a value from the sub array
+
+                if (questionsArray[i][j] == inputQuestion()) { //compare to input value
 
                     let answers = answersArray[i];
-                    answer = answers[Math.floor(Math.random() * answers.length)];
-
-                    answerFound = true;
+                    answer = answers[Math.floor(Math.random() * answers.length)]; //give one of answers in corresponding sub array
+                    
                     document.getElementById("chatHistory").innerHTML += inputQuestion() + "<br>"
-
 
                     setTimeout(function() {
                         document.getElementById("chatHistory").innerHTML += answer + "<br>";
-                    }, 2000);
+                    }, 2000); //Bots answer comes 2 secs later
 
-
+                    answerFound = true;
                     
                     break; //Stops if input matches questionsArray
                 } else {
-                    
                         questions = questionsArray[i];
-                        // i++;
 
                         proposedQuestion = questions[Math.floor(Math.random() * questions.length)];
 
-                        questionFound = true;
+                        
                         btns = document.createElement("BUTTON");
                         btns.classList.add("suggestedQuestions");
                         
-                        btns.innerHTML = proposedQuestion;
+                        btns.innerHTML = proposedQuestion; //feeds in question text from array to button
                         document.getElementById("questionBtns").appendChild(btns);
 
+                        questionFound = true;
 
 
-                        btns.addEventListener("click", function() {
+                        btns.addEventListener("click", function() { //if user does not type in existing question, then chatbot suggests a question, the user can ask
                             
                             document.getElementById("chatHistory").innerHTML += proposedQuestion + "<br>"
 
@@ -92,27 +86,18 @@ window.onload = function () {
                             let btnAnswers = answersArray[i];
                             btnAnswer = btnAnswers[Math.floor(Math.random() * btnAnswers.length)];
 
-                            
-
                             setTimeout(function() {
                                 document.getElementById("chatHistory").innerHTML += btnAnswer + "<br>";
                             }, 2000);
-
                         })
-
-                
                     break;                
                 }
-                
             }
-            if (answerFound || questionFound) {
-                // Stop outer loop when reply is found instead of interating through the entire array
-                break;
-              }
+                if (answerFound || questionFound) {
+                    // Stop outer loop when reply is found instead of interating through the entire array
+                    break;
+                }
         }
-        
-
-        // return answer;
     }
 
     btn.addEventListener("click", function() {
@@ -134,15 +119,8 @@ window.onload = function () {
 
             //placeholder text change updated in input field
             document.getElementsByName("inputField")[0].placeholder = randomPlaceholder;
-            
-            
-            
-            
-            // console.log(remove);
 
         } else {
-
-            
 
             questionAnswer();
 
